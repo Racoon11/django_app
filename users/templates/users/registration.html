@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Spring Security Demo</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<style>
+.navbar {
+	background-color: purple;
+}
+</style>
+<body>
+
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
+					Login </a>
+			</div>
+		</div>
+	</nav>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<!-- Create HTML registration form -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+
+
+				<h1>Registration</h1>
+
+				<form th:action="{% url 'users:registration' %}" method="post" >
+					{% csrf_token %}
+					<div class="form-group">
+						<label class="control-label" for="userName"> User name </label>
+						<input id="userName" class="form-control" name="userName"
+							required autofocus="autofocus" />
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="firstName"> First Name </label>
+						<input id="firstName" class="form-control" name="firstName"
+							 autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="lastName"> Last Name </label> <input
+							id="lastName" class="form-control" name="lastName"
+							 autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="email"> Email </label> <input
+							id="email" class="form-control" name="email" required
+							autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="password"> Password </label> <input
+							id="password" class="form-control" type="password"
+							name="password" required autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Register</button>
+						<span>Already registered? <a href="/" th:href="@{/login}">Login
+								here</a></span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
