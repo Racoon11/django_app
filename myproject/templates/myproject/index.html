@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>English App</title>
+<title>EnglishApp</title>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <!-- <script src="resources/some.js"></script> -->
@@ -27,8 +27,15 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/"> Home </a>
+				{% if login %}
+				<a class="navbar-brand" href="users/login?logout=1" > Logout </a>
+				<a class="navbar-brand" href="users/" > {{username}} </a>
+				{% else %}
+				<a class="navbar-brand" href="users/registration" th:href="@{/users/registration}"> Registration </a>
+                <a class="navbar-brand" href="users/login" th:href="@{/users/login}"> Login </a>
+				{% endif %}
 			</div>
+
 		</div>
 	</nav>
 
@@ -40,15 +47,14 @@
 	<br>
 	<br>
 	<div class="container">
-	<p> Username: {{username}} </p>
-    <p> Last name: {{lastname}} </p>
-    <p> First name: {{firstname}} </p>
-    <p> email: {{email}} </p>
-		<p>level: {{level}}</p>
-		<p> words: {{words}}</p>
-		<br>
-		<a type="button" class="btn btn-primary" href="/users/edit">edit info</a>
+		{% if login %}
+		<h1 class="text-center" size="6" text-align="center"> Welcome, {{username}}! </h1>
+		{% else %}
+		<h1 class="text-center" size="6" text-align="center" style="color: purple" >
+			Welcome! Would you like to <a href="users/login">try</a> our awesome app? </h1>
+		{% endif %}
 	</div>
+
 </body>
 </html>
 </title>

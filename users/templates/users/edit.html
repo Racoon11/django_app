@@ -25,8 +25,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/users/registration" th:href="@{/users/registration}"> Registration </a>
-                <a class="navbar-brand" href="/users/login" th:href="@{/users/login}"> Login </a>
+				<a class="navbar-brand" href="/users/" > Home </a>
 			</div>
 		</div>
 	</nav>
@@ -44,15 +43,10 @@
 			<div class="col-md-6 col-md-offset-3">
 
 
-				<h1>Registration</h1>
+				<h1>Edit information</h1>
 
-				<form th:action="{% url 'users:registration' %}" method="post" >
+				<form th:action="{% url 'users:edit' %}" method="post" >
 					{% csrf_token %}
-					<div class="form-group">
-						<label class="control-label" for="userName"> User name </label>
-						<input id="userName" class="form-control" name="userName"
-							required autofocus="autofocus" />
-					</div>
 					<div class="form-group">
 						<label class="control-label" for="firstName"> First Name </label>
 						<input id="firstName" class="form-control" name="firstName"
@@ -62,25 +56,24 @@
 					<div class="form-group">
 						<label class="control-label" for="lastName"> Last Name </label> <input
 							id="lastName" class="form-control" name="lastName"
-							 autofocus="autofocus" />
+							  autofocus="autofocus"  />
+					</div>
+
+                  <div class="form-group">
+						<label class="control-label" for="level"> level </label> <select
+							id="level" class="form-control" name="level"
+							 autofocus="autofocus" list="levels" onkeydown="return false" >
+                              <option value=""></option>
+                              <option value="Elementary">Elementary</option>
+                              <option value="Beginner">Beginner</option>
+                              <option value="Intermediate">Intermediate</option>
+                              <option value="Upper-Intermediate">Upper-Intermediate</option>
+                              <option value="Advanced">Advanced</option>
+                  </select>
 					</div>
 
 					<div class="form-group">
-						<label class="control-label" for="email"> Email </label> <input
-							id="email" class="form-control" name="email" required
-							autofocus="autofocus" />
-					</div>
-
-					<div class="form-group">
-						<label class="control-label" for="password"> Password </label> <input
-							id="password" class="form-control" type="password"
-							name="password" required autofocus="autofocus" />
-					</div>
-
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Register</button>
-						<span>Already registered? <a href="/users/login" >Login
-								here</a></span>
+						<button type="submit" class="btn btn-primary">save</button>
 					</div>
 				</form>
 			</div>

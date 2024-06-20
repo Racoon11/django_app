@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Spring Security Demo</title>
+<title>EnglishApp</title>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <!-- <script src="resources/some.js"></script> -->
@@ -27,8 +27,8 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login</a>
+				<a class="navbar-brand" href="/users/registration" > Registration </a>
+                <a class="navbar-brand" href="/users/login" > Login </a>
 			</div>
 		</div>
 	</nav>
@@ -44,18 +44,22 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 
-				<h1>User Login Page</h1>
+				<h1>Login</h1>
 				<form th:action="@{/login}" method="post">
 					{% csrf_token %}
 					<!-- error message -->
-					<div th:if="${param.error}">
+					<div>
+						{% if error %}
 						<div class="alert alert-danger">Invalid username or
 							password.</div>
+						{% endif %}
 					</div>
 
 					<!-- logout message -->
-					<div th:if= {{ logout }}">
+					<div>
+						{% if logout %}
 						<div class="alert alert-info">You have been logged out.</div>
+						{% endif %}
 					</div>
 
 					<div class="form-group">
@@ -80,7 +84,7 @@
 					</div>
 				</form>
 				<div class="form-group">
-					<span>New user? <a href="/" th:href="@{/registration}">Register
+					<span>New user? <a href="/users/registration">Register
 							here</a></span>
 				</div>
 			</div>
