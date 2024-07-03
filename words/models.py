@@ -3,16 +3,18 @@ from django.contrib.auth.models import User
 from users.models import Information
 import datetime
 from django.utils import timezone
+from random import randint
 
 
 deltas = [1, 3, 7, 30, 120]
 deltas = list(map(lambda x: datetime.timedelta(days=x), deltas))
-
+n = 8050
 class Base(models.Model):
     word_eng = models.CharField(max_length=50)
     word_rus = models.CharField(max_length=60)
     def __str__(self):
         return self.word_eng
+
 class UserWord(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     word_id = models.ForeignKey(Base, on_delete=models.CASCADE)

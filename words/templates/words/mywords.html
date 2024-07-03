@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
+{% load static %}
 <head>
 <meta charset="ISO-8859-1">
 <title>LangLand</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link rel="stylesheet"  href="{% static 'words/style.css' %}">
 
 </head>
 
 <body>
 
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary"  >
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary"  >
 		  <div class="container">
 			<a class="navbar-brand" href="#">
 				LangLand
@@ -35,33 +36,45 @@
 			</div>
 		  </div>
 		</nav>
+<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<div class="container h-100">
+<div class="container h-100">
 		<div class="row h-100 justify-content-center align-items-center">
-			<div class="col-md-6 col-md-offset-3">
-	<h3> Username: {{username}} </h3>
-    <p> Last name: {{lastname}} </p>
-    <p> First name: {{firstname}} </p>
-    <p> email: {{email}} </p>
-		<p>level: {{level}}</p>
-		<p> learnt words: {{words}}</p>
-		<br>
-		<a type="button" class="btn btn-primary" href="/users/edit">edit info</a>
+			<div class="col-md-12 col-md-offset-3">
+
+    <div class="row">
+		<h3> My dictionary </h3>
+
+		<div class="col-md-3">
+			<br>
+		{% for choice in words %}
+			<div class = "row">
+		<p class="m-3">{{choice}}</p>
+				</div>
+		{% endfor %}
+	</div>
+		<div class="col-md-1 ">
+			<br>
+			{% for choice in idxs %}
+			<div class = "row">
+			<form th:action="/words/mywords" method="post">
+				{% csrf_token %}
+				<button type="submit" name="id" id="login-submit"
+									class="btn btn-primary m-2 p-2" value={{ choice }}>del</button>
+
+			</form>
+			</div>
+			{% endfor %}
+		</div>
+</div>
 	</div>
 		</div>
 	</div>
-</body>
-</html>
-</title>
-</head>
-<body>
-
 </body>
 </html>

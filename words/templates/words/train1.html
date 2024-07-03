@@ -28,9 +28,6 @@
 				  <li class="nav-item">
 					  <a class="nav-link" href="/words" > Words </a>
 				  </li>
-				  <li class="nav-item">
-					  <a class="nav-link" href="/words/mywords" > MyWords </a>
-				  </li>
 			  </ul>
 			</div>
 		  </div>
@@ -43,25 +40,28 @@
 	<br>
 	<br>
 	<br>
-	<div class="container h-100">
+<div class="container h-100">
 		<div class="row h-100 justify-content-center align-items-center">
-			<div class="col-md-6 col-md-offset-3">
-	<h3> Username: {{username}} </h3>
-    <p> Last name: {{lastname}} </p>
-    <p> First name: {{firstname}} </p>
-    <p> email: {{email}} </p>
-		<p>level: {{level}}</p>
-		<p> learnt words: {{words}}</p>
-		<br>
-		<a type="button" class="btn btn-primary" href="/users/edit">edit info</a>
+			<div class="col-md-12 col-md-offset-3 ">
+	<h3 class="mx-4 text-center"> {{engWord}} </h3>
 	</div>
 		</div>
-	</div>
-</body>
-</html>
-</title>
-</head>
-<body>
+    <div class="row h-100 align-items-center">
+      <div class="col-md-12 " align="center">
+        {% for word in rusWords1 %}
+		<button class = "btn btn-primary btn-lg m-3" > {{word}}</button>
+		{% endfor %}
 
+      </div>
+          </div>
+	<div class="row h-100 align-items-center">
+      <div class="col-md-12 " align="center">
+        {% for word in rusWords2 %}
+		<button class = "btn btn-primary btn-lg m-3" > {{word}}</button>
+		{% endfor %}
+
+      </div>
+          </div>
+	</div>
 </body>
 </html>
