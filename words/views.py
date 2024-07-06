@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Base, UserWord
 from random import randint
 import datetime
 from django.utils import timezone
 from time import sleep
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
 
 def index(request):
     if request.method == 'POST' and ('id' in request.POST):
@@ -32,15 +33,20 @@ def index(request):
     content = {"words": words, "idxs": idxs}
     return render(request, 'words/index.html', content)
 
+def add(request):
+    if request.method == 'POST' and ('id' in request.POST):
+        if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))):
+            uw = UserWord(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))
+            uw.save()
+    return redirect("/words/")
 
 def train(request):
     now = timezone.now()
     user_words = UserWord.objects.filter(user_id_id=request.session['id'], when_to_train__lte=now)[:5]
     idxs = list(map(lambda x: x.word_id_id, user_words))
     words = list(map(lambda x: Base.objects.filter(id=x)[0], idxs))
-    for i in range(len(words)):
-        return train1(request, words[i])
-    return HttpResponse("done")
+    content = {"words": words, "idxs": idxs }
+    return render(request, 'words/train1.html', content)
 
 
 def train1(request, word):
@@ -51,7 +57,7 @@ def train1(request, word):
     return render(request, 'words/train1.html', content)
 
 
-
+@csrf_protect
 def mywords(request):
     if request.method == 'POST':
         UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id'])).delete()
@@ -64,4 +70,15 @@ def mywords(request):
         words.append(word.word_eng + " - " + word.word_rus)
     content = {"words": words, "idxs": idxs}
     return render(request, 'words/mywords.html', content)
+
+def fetch(request):
+    words = []
+    idxs = []
+    ws = UserWord.objects.filter(user_id_id=request.session['id'])
+    for word2 in ws:
+        idxs.append(word2.word_id_id)
+        word = Base.objects.filter(id=word2.word_id_id)[0]
+        words.append(word.word_eng + " - " + word.word_rus)
+    content = {"words": words, "idxs": idxs}
+    return JsonResponse(content)
 

@@ -8,4 +8,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('train', views.train, name='train'),
     path('mywords', views.mywords, name='mywords'),
+    path("add", views.add, name="add"),
+    path('mywords/fetch', views.fetch, name='fetch'),
 ]

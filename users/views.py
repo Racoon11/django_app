@@ -118,4 +118,4 @@ def edit(request):
                    'level': inf.level,}
     except (KeyError):
         return HttpResponse("We don't know u")
-    return render(request, "users/edit.html")
+    return render(request, "users/edit.html", context)

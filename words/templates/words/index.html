@@ -76,7 +76,7 @@
 		<div class="col-md-1 ">
 			<br>
 			{% for choice in idxs %}
-			<form th:action="/words" method="post">
+			<form action="/words/add" method="post">
 				{% csrf_token %}
 				<button type="submit" name="id" id="login-submit"
 									class="btn btn-primary"  value={{ choice }}>+</button>
