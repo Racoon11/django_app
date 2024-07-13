@@ -27,7 +27,13 @@ class UserWord(models.Model):
         return now >= self.when_to_train
     def is_learnt(self):
         return self.count >= 5
-    def train_correct(self):
-        self.when_to_train = timezone.now() + deltas[self.count]
+    def train(self, correct):
+
+        if correct:
+            self.when_to_train = timezone.now() + deltas[self.count]
+            self.count += 1
+        else:
+            self.when_to_train = timezone.now() + deltas[0]
+
 
 

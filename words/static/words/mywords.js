@@ -1,7 +1,10 @@
 
 
-function createButton2(words, idxs, csrf_token){
+function createButton(words, idxs, times, nexts, csrf_token){
 
+    console.log(times);
+    console.log(nexts);
+    console.log("here");
     var idxs = idxs.split(', ');
     idxs[0] = idxs[0].slice(1, idxs[0].length);
     idxs[idxs.length-1] = idxs.at(-1).slice(0, idxs.at(-1).length-1)
@@ -33,11 +36,20 @@ function createButton2(words, idxs, csrf_token){
 
     for (var i=0; i < idxs.length; i++){
         var divRow = document.createElement("div");
-        divRow.className = "col-md-4"
-        var wordTitle = document.createElement("h7");
+        divRow.className = "col-md-3"
+        var wordTitle = document.createElement("h6");
         wordTitle.textContent = words2[i];
+        var br = document.createElement("br");
+        var br2 = document.createElement("br");
+        var timesH = document.createElement("h7");
+        timesH.textContent = times[i] + " times trained";
+        var nextTr = document.createElement("h7");
+        nextTr.textContent = "next train in " + nexts[i] + " days";
         divRow.appendChild(wordTitle);
-
+        //divRow.appendChild(br);
+        divRow.appendChild(timesH);
+        divRow.appendChild(br2);
+        divRow.appendChild(nextTr);
         var nobr = document.createElement("nobr");
 		var subForm = document.createElement("form");
 		subForm.action = "/words/mywords";
@@ -64,6 +76,7 @@ function createButton2(words, idxs, csrf_token){
 
 		nobr.appendChild(subForm);
         divRow.appendChild(nobr)
+        divRow.appendChild(br);
         div4.appendChild(divRow);
     }
 

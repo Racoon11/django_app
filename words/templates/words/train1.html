@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% load static %}
 <meta charset="ISO-8859-1">
 <title>LangLand</title>
 
@@ -9,6 +10,7 @@
 
 
 <script src="{% static 'words/train.js' %}"></script>
+
 </head>
 
 <body>
@@ -44,7 +46,9 @@
 	<br>
 
 	<script>
-		train({{words}}, {{idxs}});
+	<!--var words2 = {{words}};-->
+	var csrftoken = '{{ csrf_token }}';
+	train("{{rusWords}}", "{{engWords}}", {{idxs}}, csrftoken);
 	</script>
 <!--<div class="container h-100">
 		<div class="row h-100 justify-content-center align-items-center">

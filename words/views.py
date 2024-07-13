@@ -7,6 +7,7 @@ from django.utils import timezone
 from time import sleep
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
+from math import ceil
 
 def index(request):
     if request.method == 'POST' and ('id' in request.POST):
@@ -30,7 +31,9 @@ def index(request):
         idxs.append(idx)
         word = Base.objects.filter(id=idx)[0]
         words.append(word.word_eng + " - " + word.word_rus)
-    content = {"words": words, "idxs": idxs}
+    now = timezone.now()
+    words_to_train = len(UserWord.objects.filter(user_id_id=request.session['id'], when_to_train__lte=now))
+    content = {"words": words, "idxs": idxs, "totrain": words_to_train}
     return render(request, 'words/index.html', content)
 
 def add(request):
@@ -45,30 +48,28 @@ def train(request):
     user_words = UserWord.objects.filter(user_id_id=request.session['id'], when_to_train__lte=now)[:5]
     idxs = list(map(lambda x: x.word_id_id, user_words))
     words = list(map(lambda x: Base.objects.filter(id=x)[0], idxs))
-    content = {"words": words, "idxs": idxs }
+    content = {"engWords": [words[i].word_eng for i in range(len(words))],
+               'rusWords': [word.word_rus for word in words],
+               "idxs": idxs }
     return render(request, 'words/train1.html', content)
 
 
-def train1(request, word):
-    print('here')
-    content = {'engWord': word.word_eng,
-               'rusWords1': [word.word_rus, 'слово2оооо'],
-               'rusWords2': ['слово3', 'слово4']}
-    return render(request, 'words/train1.html', content)
-
-
-@csrf_protect
 def mywords(request):
     if request.method == 'POST':
-        UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id'])).delete()
+        UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id'])).delete()
     words = []
     idxs = []
+    times = []
+    nextTrain = []
     ws = UserWord.objects.filter(user_id_id=request.session['id'])
     for word2 in ws:
         idxs.append(word2.word_id_id)
         word = Base.objects.filter(id=word2.word_id_id)[0]
         words.append(word.word_eng + " - " + word.word_rus)
-    content = {"words": words, "idxs": idxs}
+        times.append(word2.count)
+        delta = word2.when_to_train - timezone.now()
+        nextTrain.append(delta.days)
+    content = {"words": words, "idxs": idxs, "times" : times, "nexts": nextTrain}
     return render(request, 'words/mywords.html', content)
 
 def fetch(request):
@@ -82,3 +83,17 @@ def fetch(request):
     content = {"words": words, "idxs": idxs}
     return JsonResponse(content)
 
+def finish(request):
+    if request.method == "POST":
+        a = str(request.read()).split(",")
+        a[0] = a[0][3:]
+        a[-1] = a[-1][:len(a[-1])-2]
+        for word in a:
+            w, c = word.split(":")
+            c = int(c)
+            w = int(w[1:-1])
+            b = UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=w)[0]
+            b.train(c == 0)
+            b.save()
+
+    return HttpResponse("apchi")
