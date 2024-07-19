@@ -34,7 +34,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'letter.tpu.ru'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-
+EMAIL_HOST_USER = "sms25@tpu.ru"
+EMAIL_HOST_PASSWORD = "edinoroGg_123"
 
 INSTALLED_APPS = [
     'django.contrib.admin',

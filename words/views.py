@@ -7,8 +7,26 @@ from django.utils import timezone
 from time import sleep
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.models import User
 from math import ceil
 
+
+def check_on_user(request):
+    try:
+        user = User.objects.filter(id=request.session['id'])[0]
+    except (KeyError):
+        return False
+    else:
+        return True
+
+def check_login(func):
+    def wrapper(req):
+        if not check_on_user(req):
+            return HttpResponse("We don't know u")
+        return func(req)
+    return wrapper
+
+@check_login
 def index(request):
     if request.method == 'POST' and ('id' in request.POST):
         if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))):
@@ -36,6 +54,7 @@ def index(request):
     content = {"words": words, "idxs": idxs, "totrain": words_to_train}
     return render(request, 'words/index.html', content)
 
+@check_login
 def add(request):
     if request.method == 'POST' and ('id' in request.POST):
         if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))):
@@ -43,6 +62,7 @@ def add(request):
             uw.save()
     return redirect("/words/")
 
+@check_login
 def train(request):
     now = timezone.now()
     user_words = UserWord.objects.filter(user_id_id=request.session['id'], when_to_train__lte=now)[:5]
@@ -53,7 +73,7 @@ def train(request):
                "idxs": idxs }
     return render(request, 'words/train1.html', content)
 
-
+@check_login
 def mywords(request):
     if request.method == 'POST':
         UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id'])).delete()
@@ -72,6 +92,7 @@ def mywords(request):
     content = {"words": words, "idxs": idxs, "times" : times, "nexts": nextTrain}
     return render(request, 'words/mywords.html', content)
 
+@check_login
 def fetch(request):
     words = []
     idxs = []
@@ -83,6 +104,7 @@ def fetch(request):
     content = {"words": words, "idxs": idxs}
     return JsonResponse(content)
 
+@check_login
 def finish(request):
     if request.method == "POST":
         a = str(request.read()).split(",")
@@ -97,3 +119,6 @@ def finish(request):
             b.save()
 
     return HttpResponse("apchi")
+
+def check(request):
+    return render(request, 'words/check.html')

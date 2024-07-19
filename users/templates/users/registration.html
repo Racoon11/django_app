@@ -49,6 +49,16 @@
 
 				<form th:action="{% url 'users:registration' %}" method="post" >
 					{% csrf_token %}
+					<div>
+						{% if email %}
+						<div class="alert alert-danger">Email already exists</div>
+						{% endif %}
+					</div>
+					<div>
+						{% if usernn %}
+						<div class="alert alert-danger"> Username already exists</div>
+						{% endif %}
+					</div>
 					<div class="form-group">
 						<label class="control-label" for="userName"> User name </label>
 						<input id="userName" class="form-control" name="userName"

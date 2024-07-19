@@ -136,10 +136,18 @@ function third(idx, eng, rus){
     engH3.className = "mx-4 text-center";
     engH3.textContent = rus;
 
-    var ans = document.createElement('h3');
+    var ans = document.createElement('div');
     ans.className = "mx-4 text-center";
     ans.id = "answer";
-    ans.textContent = ".";
+
+    for (var i=0; i < eng.length; i++){
+        var letter = document.createElement('button');
+        letter.className = "btn btn-light btn-lg border border-primary";
+        letter.id = "btn" + i;
+        letter.textContent = ".";
+        letter.disabled = true;
+        ans.appendChild(letter);
+    }
 
     div.appendChild(engH3);
     div.appendChild(ans);
@@ -168,8 +176,8 @@ function clickButton3(but){
     var word = words[idx];
     var realChar = word.eng[word.progress];
     if (clickedChar == realChar){
-        var label = document.getElementById("answer");
-        label.textContent = word.eng.slice(0, ++word.progress);
+        var label = document.getElementById("btn" + word.progress);
+        label.textContent = word.eng.slice(word.progress, ++word.progress);
         but.srcElement.remove(); // ??
         if (word.progress >= word.eng.length){
             document.getElementById("third").remove();
