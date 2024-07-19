@@ -37,14 +37,18 @@ function createButton(words, idxs, times, nexts, csrf_token){
     for (var i=0; i < idxs.length; i++){
         var divRow = document.createElement("div");
         divRow.className = "col-md-3"
+
         var wordTitle = document.createElement("h6");
         wordTitle.textContent = words2[i];
         var br = document.createElement("br");
         var br2 = document.createElement("br");
+
         var timesH = document.createElement("h7");
         timesH.textContent = times[i] + " times trained";
+
         var nextTr = document.createElement("h7");
         nextTr.textContent = "next train in " + nexts[i] + " days";
+
         divRow.appendChild(wordTitle);
         //divRow.appendChild(br);
         divRow.appendChild(timesH);

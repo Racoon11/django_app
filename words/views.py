@@ -120,5 +120,3 @@ def finish(request):
 
     return HttpResponse("apchi")
 
-def check(request):
-    return render(request, 'words/check.html')

@@ -11,5 +11,4 @@ urlpatterns = [
     path("add", views.add, name="add"),
     path('mywords/fetch', views.fetch, name='fetch'),
     path("train/finish", views.finish, name="finish"),
-    path("check", views.check),
 ]

@@ -1,11 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 
-from django.template import loader
+
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
-from django.db.models import F
-from django.urls import reverse
-from django.views import generic
 
 from django.contrib.auth.models import User
 
@@ -42,40 +39,33 @@ def registration(request):
             content["usernn"] = True
         if content:
             return render(request, "users/registration.html", content)
+
         request.session["userName"] = request.POST["userName"]
-        request.session["Email"] = request.POST["email"]
+        request.session["email"] = request.POST["email"]
         request.session["password"] = request.POST["password"]
         request.session["firstName"] = request.POST["firstName"]
         request.session["lastName"] = request.POST["lastName"]
         request.session['code'] = ''.join([str(randint(0, 9)) for _ in range(6)])
 
-        '''
-        user = User.objects.create_user(request.POST["userName"], request.POST["email"], request.POST["password"])
-        user.first_name = request.POST["firstName"]
-        user.last_name = request.POST['lastName']
-        user.save()
-        inf = Information(id=user, level='Beginner')
-        inf.save()
-        '''
         send_email([request.POST["email"]], request.session['code'])
         return render(request, "users/code.html")
     return render(request, "users/registration.html")
 
+
+def save_user(source):
+    user = User.objects.create_user(source["userName"], source["email"], source["password"])
+    user.first_name = source["firstName"]
+    user.last_name = source['lastName']
+    user.save()
+    inf = Information(user=user, level='Beginner')
+    inf.save()
+
 def code(request):
     if (request.POST['code'] == request.session['code']):
-        print(request.session)
-        user = User.objects.create_user(request.session["userName"], request.session["Email"], request.session["password"])
-        user.first_name = request.session["firstName"]
-        user.last_name = request.session['lastName']
-        user.save()
-        inf = Information(user=user, level='Beginner')
-        inf.save()
+        save_user(request.session)
         request.session.flush()
         return HttpResponseRedirect("/users/login")
     return render(request, "users/code.html")
-
-def email_exists(request):
-    return HttpResponse("email already exists")
 
 def login(request):
     lg = request.GET.get('logout', 0)
@@ -96,6 +86,7 @@ def login(request):
         else:
             return render(request, "users/login.html", {'error': True})
     return render(request, "users/login.html")
+
 @check_login
 def index(request):
     try:
@@ -114,8 +105,7 @@ def index(request):
 
 def logout(request):
     try:
-        del request.session['username']
-        del request.session['id']
+        request.session.flush()
     except (KeyError):
         return render(request, "users/login.html", {'logout': False})
     else:
@@ -123,7 +113,7 @@ def logout(request):
 
 def send_email(email, text):
     send_mail(
-    "Subject here",
+    "LangLand message ^~^",
     text,
     settings.EMAIL_HOST_USER,
     recipient_list=email,
