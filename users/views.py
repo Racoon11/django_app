@@ -68,7 +68,7 @@ def code(request):
         user.first_name = request.session["firstName"]
         user.last_name = request.session['lastName']
         user.save()
-        inf = Information(id=user, level='Beginner')
+        inf = Information(user=user, level='Beginner')
         inf.save()
         request.session.flush()
         return HttpResponseRedirect("/users/login")
@@ -100,7 +100,7 @@ def login(request):
 def index(request):
     try:
         user = User.objects.filter(id=request.session['id'])[0]
-        inf = Information.objects.filter(id=request.session['id'])[0]
+        inf = Information.objects.filter(user_id=request.session['id'])[0]
         context = {"username": user.username,
                    'lastname': user.last_name,
                    'firstname': user.first_name,
@@ -133,7 +133,7 @@ def send_email(email, text):
 def edit(request):
     if request.method == 'POST':
         user = User.objects.filter(id=request.session['id'])[0]
-        inf = Information.objects.filter(id=request.session['id'])[0]
+        inf = Information.objects.filter(user_id=request.session['id'])[0]
         if request.POST['firstName'] != "":
             user.first_name = request.POST['firstName']
         if request.POST['lastName'] != "":
@@ -145,7 +145,7 @@ def edit(request):
         return HttpResponseRedirect("/users")
     try:
         user = User.objects.filter(id=request.session['id'])[0]
-        inf = Information.objects.filter(id=request.session['id'])[0]
+        inf = Information.objects.filter(user_id=request.session['id'])[0]
         print(inf.level)
         context = {
                    'lastname': user.last_name,
