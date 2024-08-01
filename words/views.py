@@ -28,12 +28,16 @@ def check_login(func):
 
 @check_login
 def index(request):
+    # this part is responsible for adding words to user's dict
     if request.method == 'POST' and ('id' in request.POST):
-        if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))):
+        # if word was not added before, add it
+        if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))):
             uw = UserWord(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))
             uw.save()
+
+    # this part is processing search requests on the page
     elif request.method == 'POST' and ('search' in request.POST):
-        words = []
+        words = []  # words that we'll show
         idxs = []
         ws = Base.objects.filter(word_eng__startswith=request.POST['search'])[:5]
         for word in ws:
@@ -41,6 +45,8 @@ def index(request):
             words.append(word.word_eng + " - " + word.word_rus)
         content = {"words": words, "idxs": idxs}
         return render(request, 'words/index.html', content)
+
+    # if there was not any search req, shows 5 random words
     n = 8050
     words = []
     idxs = []
@@ -49,8 +55,11 @@ def index(request):
         idxs.append(idx)
         word = Base.objects.filter(id=idx)[0]
         words.append(word.word_eng + " - " + word.word_rus)
+
+    # counts the amount of words that should be trained
     now = timezone.now()
     words_to_train = len(UserWord.objects.filter(user_id_id=request.session['id'], when_to_train__lte=now))
+
     content = {"words": words, "idxs": idxs, "totrain": words_to_train}
     return render(request, 'words/index.html', content)
 

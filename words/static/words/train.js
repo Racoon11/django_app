@@ -37,8 +37,6 @@ function train(rusWords, engWords, idxs, csrftoken){
     }
     csrf = csrftoken;
     var idx = idxs[0];
-    /*return loadFinal();
-    return;*/
     return first(idxs[0], words[idx].rus, words[idx].eng, rusGlobal, clickButton);
 
 }
@@ -165,6 +163,7 @@ function third(idx, eng, rus){
         but.onclick = clickButton3.bind(this);
         divButtons.appendChild(but);
     }
+
 
     mainDiv.appendChild(divButtons);
     document.body.appendChild(mainDiv);
