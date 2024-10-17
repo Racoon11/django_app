@@ -47,29 +47,39 @@
 	<br>
 	<br>
 	<div class="container h-100">
-		<div class="row h-100 justify-content-center align-items-center">
-			<div class="col-md-6 col-md-offset-3">
-	<h3> Username: {{username}} </h3>
-    <p> Last name: {{lastname}} </p>
-    <p> First name: {{firstname}} </p>
-    <p> email: {{email}} </p>
-		<p>level: {{level}}</p>
-		<p> learnt words: {{words}}</p>
-				<p> current language: {{lang}}</p>
-				<a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="/words/language?language=eng" > Change learning language to English </a>
-				<br>
-				<a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="/words/language?language=ger" > Change learning language to German </a>
-		<br>
-				<br>
-		<a type="button" class="btn btn-primary" href="/users/edit">edit info</a>
-	</div>
+			<div class="row h-100 justify-content-center align-items-center">
+				<div class="col-md-6 col-md-offset-3">
+		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
 		</div>
-	</div>
-</body>
-</html>
-</title>
-</head>
-<body>
-
+			</div>
+		</div>
 </body>
 </html>

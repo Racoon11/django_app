@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import BaseEng, BaseGerm, UserWordEng, UserWordGerm
 
-# Register your models here.
+
+admin.site.register(BaseEng)
+admin.site.register(BaseGerm)
+admin.site.register(UserWordEng)
+admin.site.register(UserWordGerm)

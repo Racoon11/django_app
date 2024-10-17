@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from .models import Base, UserWord
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from .models import BaseEng, UserWordEng, BaseGerm, UserWordGerm
 from random import randint
 import datetime
 from django.utils import timezone
@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from math import ceil
 
+Base = BaseEng
+UserWord = UserWordEng
 
 def check_on_user(request):
     try:
@@ -47,7 +49,7 @@ def index(request):
         return render(request, 'words/index.html', content)
 
     # if there was not any search req, shows 5 random words
-    n = 8050
+    n = len(Base.objects.all())
     words = []
     idxs = []
     for i in range(5):
@@ -128,4 +130,20 @@ def finish(request):
             b.save()
 
     return HttpResponse("apchi")
+
+@check_login
+def change_language(request):
+    language = request.GET.get('language', 0)
+    global Base, UserWord
+    if (language == "ger"):
+        Base = BaseGerm
+        UserWord = UserWordGerm
+        request.session['lang'] = 'ger'
+    elif (language == "eng"):
+        Base = BaseEng
+        UserWord = UserWordEng
+        request.session['lang'] = 'eng'
+    else:
+        return Http404("incorrect language")
+    return redirect("/users/")
 

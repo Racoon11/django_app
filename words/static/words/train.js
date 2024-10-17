@@ -37,16 +37,38 @@ function train(rusWords, engWords, idxs, csrftoken){
     }
     csrf = csrftoken;
     var idx = idxs[0];
+    //return fourth(idxs[0], words[idx].eng, words[idx].rus)
     return first(idxs[0], words[idx].rus, words[idx].eng, rusGlobal, clickButton);
 
 }
 
- function clickButton(choice){
 
+function showResult(clickFunc, choice) {
+    /*console.log(choice);
+    console.log(clickFunc);*/
+    var but1 = document.getElementById(choice.target.innerText);
+    var but2 = document.getElementById(words[idxGlobal[0]].eng);
+    if (but2 == null) {
+        but2 = document.getElementById(words[idxGlobal[0]].rus);
+    }
+    but1.className = "btn btn-danger btn-lg m-3 col-md-4";
+    but2.className = "btn btn-success btn-lg m-3 col-md-4";
+
+    var but = document.createElement('button');
+    but.className = "btn btn-primary btn-lg m-3 col-md-4";
+    but.textContent = "next";
+    but.id = choice.target.innerText;
+    but.onclick = clickFunc.bind(choice);
+
+    divButtons = document.getElementById("divButtons");
+    divButtons.appendChild(but);
+}
+
+ function clickButton(choice){
         var j = idxGlobal.shift();
         document.getElementById("first").remove();
 
-        if (choice.target.innerText != words[j].rus && words[j].mistakes[0] < 3){
+        if (choice.target.id != words[j].rus && words[j].mistakes[0] < 3){
             idxGlobal.push(j);
             words[j].mistakes[0] += 1;
         }
@@ -65,7 +87,7 @@ function train(rusWords, engWords, idxs, csrftoken){
 function clickButton2(choice){
     var j = idxGlobal.shift();
     document.getElementById("first").remove();
-    if (choice.target.innerText != words[j].eng && words[j].mistakes[1] < 3){
+    if (choice.target.id != words[j].eng && words[j].mistakes[1] < 3){
         idxGlobal.push(j);
         words[j].mistakes[1] += 1;
     }
@@ -99,6 +121,7 @@ function clickButton2(choice){
         var divButtons = document.createElement('div');
         divButtons.className = "col-md-12 h-100";
         divButtons.align = "center";
+        divButtons.id = "divButtons";
         options = [rus];
         var i = 0;
         while(options.length < 4){
@@ -114,8 +137,9 @@ function clickButton2(choice){
         for (var i=0; i<4; i++) {
             var but = document.createElement('button');
             but.className = "btn btn-primary btn-lg m-3 col-md-4";
+            but.id = options[i];
             but.textContent = options[i];
-            but.onclick = clickFunc.bind(this);
+            but.onclick = showResult.bind(this, clickFunc);
             divButtons.appendChild(but);
         }
         mainDiv.appendChild(divButtons);
@@ -157,6 +181,7 @@ function third(idx, eng, rus){
     var engSorted = eng.split('');
     engSorted.sort(randomSort);
     for (var i=0; i < eng.length; i++){
+        if (engSorted[i] == " ") { continue; }
         var but = document.createElement('button');
         but.className = "btn btn-primary btn-lg m-3";
         but.textContent = engSorted[i];
@@ -170,14 +195,19 @@ function third(idx, eng, rus){
 
 }
 function clickButton3(but){
-    var idx = idxGlobal[0];
-    var clickedChar = but.target.innerText;
-    var word = words[idx];
+    var idx = idxGlobal[0]; // index of the word that is trained
+    var clickedChar = but.target.innerText; // char that was clicked
+    var word = words[idx]; // word in foreign language
     var realChar = word.eng[word.progress];
     if (clickedChar == realChar){
         var label = document.getElementById("btn" + word.progress);
         label.textContent = word.eng.slice(word.progress, ++word.progress);
         but.srcElement.remove(); // ??
+        if (word.eng[word.progress] == " "){
+            var label = document.getElementById("btn" + word.progress);
+            ++word.progress;
+            label.textContent = ".";
+        }
         if (word.progress >= word.eng.length){
             document.getElementById("third").remove();
             word.progress = 0;
@@ -235,6 +265,10 @@ function fourth(idx, eng, rus){
 	inpDiv.appendChild(but);
 	div.appendChild(engH3);
     div.appendChild(inpDiv);
+
+    var a = document.createElement("h3")
+    a.textContent = "Ü ü, Ö ö, Ä ä, ẞ ß"
+    div.appendChild(a);
     mainDiv.appendChild(div);
     document.body.appendChild(mainDiv);
 }
@@ -243,6 +277,7 @@ function clickButton4(button){
     var inp = document.getElementById("inputWord").value;
     var idx = idxGlobal[0];
     var word = words[idx];
+    console.log(word);
     document.getElementById("fourth").remove();
     if (inp != word.eng) {
         word.mistakes[3]++;

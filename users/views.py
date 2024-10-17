@@ -78,6 +78,7 @@ def login(request):
         if user is not None:
             request.session['username'] = user.username
             request.session['id'] = user.id
+            request.session['lang'] = "eng"
             context = {"username": user.username,
                         'lastname': user.last_name,
                        'firstname': user.first_name,
@@ -97,7 +98,8 @@ def index(request):
                    'firstname': user.first_name,
                    'email': user.email,
                    'level': inf.level,
-                   'words': inf.words}
+                   'words': inf.words,
+                   'lang': request.session['lang']}
     except (KeyError):
         return HttpResponse("We don't know u")
     else:
