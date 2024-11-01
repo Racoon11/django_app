@@ -13,6 +13,7 @@ from math import ceil
 Base = BaseEng
 UserWord = UserWordEng
 
+
 def check_on_user(request):
     try:
         user = User.objects.filter(id=request.session['id'])[0]
@@ -21,20 +22,23 @@ def check_on_user(request):
     else:
         return True
 
+
 def check_login(func):
     def wrapper(req):
         if not check_on_user(req):
             return HttpResponse("We don't know u")
         return func(req)
+
     return wrapper
+
 
 @check_login
 def index(request):
     # this part is responsible for adding words to user's dict
     if request.method == 'POST' and ('id' in request.POST):
         # if word was not added before, add it
-        if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))):
-            uw = UserWord(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))
+        if not (UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))):
+            uw = UserWord(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))
             uw.save()
 
     # this part is processing search requests on the page
@@ -65,13 +69,15 @@ def index(request):
     content = {"words": words, "idxs": idxs, "totrain": words_to_train}
     return render(request, 'words/index.html', content)
 
+
 @check_login
 def add(request):
     if request.method == 'POST' and ('id' in request.POST):
-        if not(UserWord.objects.filter(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))):
-            uw = UserWord(user_id_id=request.session['id'], word_id_id = int(request.POST['id']))
+        if not (UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))):
+            uw = UserWord(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))
             uw.save()
     return redirect("/words/")
+
 
 @check_login
 def train(request):
@@ -81,8 +87,9 @@ def train(request):
     words = list(map(lambda x: Base.objects.filter(id=x)[0], idxs))
     content = {"engWords": [words[i].word_eng for i in range(len(words))],
                'rusWords': [word.word_rus for word in words],
-               "idxs": idxs }
+               "idxs": idxs}
     return render(request, 'words/train1.html', content)
+
 
 @check_login
 def mywords(request):
@@ -100,8 +107,9 @@ def mywords(request):
         times.append(word2.count)
         delta = word2.when_to_train - timezone.now()
         nextTrain.append(delta.days)
-    content = {"words": words, "idxs": idxs, "times" : times, "nexts": nextTrain}
+    content = {"words": words, "idxs": idxs, "times": times, "nexts": nextTrain}
     return render(request, 'words/mywords.html', content)
+
 
 @check_login
 def fetch(request):
@@ -115,12 +123,13 @@ def fetch(request):
     content = {"words": words, "idxs": idxs}
     return JsonResponse(content)
 
+
 @check_login
 def finish(request):
     if request.method == "POST":
         a = str(request.read()).split(",")
         a[0] = a[0][3:]
-        a[-1] = a[-1][:len(a[-1])-2]
+        a[-1] = a[-1][:len(a[-1]) - 2]
         for word in a:
             w, c = word.split(":")
             c = int(c)
@@ -130,6 +139,7 @@ def finish(request):
             b.save()
 
     return HttpResponse("apchi")
+
 
 @check_login
 def change_language(request):
@@ -146,4 +156,3 @@ def change_language(request):
     else:
         return Http404("incorrect language")
     return redirect("/users/")
-

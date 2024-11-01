@@ -24,5 +24,6 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("words/", include("words.urls")),
     path("base/", include("base.urls")),
+    path("keywords/", include("keywords.urls")),
     path('', views.index),
 ]

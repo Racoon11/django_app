@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'myproject',
     'words',
     'base',
+    'keywords',
 ]
 
 MIDDLEWARE = [
