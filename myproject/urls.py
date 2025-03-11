@@ -25,5 +25,7 @@ urlpatterns = [
     path("words/", include("words.urls")),
     path("base/", include("base.urls")),
     path("keywords/", include("keywords.urls")),
+    path("chat/", include("chat.urls")),
+    path("recommendation/", include("similar_words.urls")),
     path('', views.index),
 ]

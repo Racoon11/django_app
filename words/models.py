@@ -26,8 +26,10 @@ class UserWordEng(models.Model):
     def is_to_train(self):
         now = timezone.now()
         return now >= self.when_to_train
+
     def is_learnt(self):
         return self.count >= 5
+
     def train(self, correct):
 
         if correct:

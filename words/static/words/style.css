@@ -8,3 +8,26 @@
             height: 70px;
             margin: 6px;
         }
+
+.word {
+    width: 300px;
+    display: inline-block;
+}
+
+#amount {
+    max-width: 17%;
+    display: inline-block;
+}
+div.vertical-scroll {
+    padding: 10px 5px 10px 20px;
+    /*background-color: #E9EBEC;*/
+    margin: 0 auto;
+    max-width: 600px;
+    height: 400px;
+    overflow-y: scroll;
+    overflow: auto;
+    overflow-x:hidden;
+  }
+ .my-button {
+ max-width: 20%;
+  }

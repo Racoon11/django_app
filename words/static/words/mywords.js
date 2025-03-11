@@ -2,9 +2,6 @@
 
 function createButton(words, idxs, times, nexts, csrf_token){
 
-    console.log(times);
-    console.log(nexts);
-    console.log("here");
     var idxs = idxs.split(', ');
     idxs[0] = idxs[0].slice(1, idxs[0].length);
     idxs[idxs.length-1] = idxs.at(-1).slice(0, idxs.at(-1).length-1)
@@ -30,7 +27,7 @@ function createButton(words, idxs, times, nexts, csrf_token){
     div4.className = "row";
 
     var title = document.createElement('h3');
-    title.textContent = "My dictionary (words at all: " + idxs.length.toString() + ")";
+    title.textContent = "My dictionary (total amount: " + idxs.length.toString() + ")";
 
     div4.appendChild(title);
 

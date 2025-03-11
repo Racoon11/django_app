@@ -136,7 +136,7 @@ function clickButton2(choice){
         options.sort(randomSort);
         for (var i=0; i<4; i++) {
             var but = document.createElement('button');
-            but.className = "btn btn-primary btn-lg m-3 col-md-4";
+            but.className = "btn btn-primary btn-lg m-3 col-md-4 my-button";
             but.id = options[i];
             but.textContent = options[i];
             but.onclick = showResult.bind(this, clickFunc);

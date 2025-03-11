@@ -70,9 +70,17 @@ def index(request):
     return render(request, 'words/index.html', content)
 
 
+def get_amount_to_train(request):
+    now = timezone.now()
+    words_to_train = len(UserWord.objects.filter(user_id_id=request.session['id'], when_to_train__lte=now))
+    content = {'train': words_to_train}
+    return JsonResponse(content)
+
+
 @check_login
 def add(request):
     if request.method == 'POST' and ('id' in request.POST):
+        print("here")
         if not (UserWord.objects.filter(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))):
             uw = UserWord(user_id_id=request.session['id'], word_id_id=int(request.POST['id']))
             uw.save()
@@ -141,18 +149,17 @@ def finish(request):
     return HttpResponse("apchi")
 
 
-@check_login
 def change_language(request):
     language = request.GET.get('language', 0)
     global Base, UserWord
-    if (language == "ger"):
+    if language == "ger":
         Base = BaseGerm
         UserWord = UserWordGerm
         request.session['lang'] = 'ger'
-    elif (language == "eng"):
+    elif language == "eng":
         Base = BaseEng
         UserWord = UserWordEng
         request.session['lang'] = 'eng'
     else:
         return Http404("incorrect language")
-    return redirect("/users/")
+    return HttpResponse("Yep")

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-66%7)(i=op71-*m=aus#re)nw$^r(x31)dks_d(#_^g+nehrg+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.0.100', '127.0.0.1', '85.143.80.176']
 
 
 # Application definition
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'words',
     'base',
     'keywords',
+    'chat',
+    "similar_words",
 ]
 
 MIDDLEWARE = [

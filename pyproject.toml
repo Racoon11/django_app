@@ -13,6 +13,9 @@ spacy = "^3.8.2"
 pytextrank = "^3.3.0"
 nltk = "^3.9.1"
 translatepy = "^2.3"
+torch = "^2.5.1"
+transformers = "^4.46.1"
+scikit-learn = "^1.5.2"
 
 
 [build-system]

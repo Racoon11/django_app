@@ -1,0 +1,18 @@
+.opponent {
+    margin: 3px;
+    background: #DDDDDD;
+}
+
+
+.me {
+    margin: 3px;
+    background: #D2E5FF;
+
+}
+div.vertical-scroll {
+    /*background-color: #E9EBEC;*/
+    margin: 0 auto;
+    height: 500px;
+    overflow-y: scroll;
+    overflow: auto;
+  }
